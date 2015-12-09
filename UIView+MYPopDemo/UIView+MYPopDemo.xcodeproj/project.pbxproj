@@ -13,6 +13,7 @@
 		DC297FEF1C17DC20002825D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC297FED1C17DC20002825D0 /* Main.storyboard */; };
 		DC297FF11C17DC20002825D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC297FF01C17DC20002825D0 /* Assets.xcassets */; };
 		DC297FF41C17DC20002825D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC297FF21C17DC20002825D0 /* LaunchScreen.storyboard */; };
+		DC2980011C17DD9D002825D0 /* UIView+MYPop.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2980001C17DD9D002825D0 /* UIView+MYPop.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		DC297FF01C17DC20002825D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC297FF31C17DC20002825D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DC297FF51C17DC20002825D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC297FFF1C17DD9D002825D0 /* UIView+MYPop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MYPop.h"; sourceTree = "<group>"; };
+		DC2980001C17DD9D002825D0 /* UIView+MYPop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MYPop.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,7 @@
 		DC297FE31C17DC20002825D0 /* UIView+MYPopDemo */ = {
 			isa = PBXGroup;
 			children = (
+				DC297FFE1C17DD9D002825D0 /* UIView+MYPop */,
 				DC297FE71C17DC20002825D0 /* AppDelegate.h */,
 				DC297FE81C17DC20002825D0 /* AppDelegate.m */,
 				DC297FEA1C17DC20002825D0 /* ViewController.h */,
@@ -77,6 +81,16 @@
 				DC297FE51C17DC20002825D0 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DC297FFE1C17DD9D002825D0 /* UIView+MYPop */ = {
+			isa = PBXGroup;
+			children = (
+				DC297FFF1C17DD9D002825D0 /* UIView+MYPop.h */,
+				DC2980001C17DD9D002825D0 /* UIView+MYPop.m */,
+			);
+			name = "UIView+MYPop";
+			path = "../../UIView+MYPop";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,6 +165,7 @@
 			files = (
 				DC297FEC1C17DC20002825D0 /* ViewController.m in Sources */,
 				DC297FE91C17DC20002825D0 /* AppDelegate.m in Sources */,
+				DC2980011C17DD9D002825D0 /* UIView+MYPop.m in Sources */,
 				DC297FE61C17DC20002825D0 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

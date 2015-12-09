@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "UIView+MYPop.h"
 
 @interface ViewController ()
 
@@ -22,6 +23,16 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)fadeInAnimate:(id)sender {
+    UIView* aView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
+    aView.backgroundColor = [UIColor redColor];
+    [aView showWithAnimateType:MYPopAnimationTypeFade];
+}
+- (IBAction)CoverInAnimate:(id)sender {
+    UIView* aView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 300)];
+    aView.backgroundColor = [UIColor yellowColor];
+    [aView showWithAnimateType:MYPopAnimationTypeCover];
 }
 
 @end
