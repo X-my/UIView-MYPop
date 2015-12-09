@@ -20,7 +20,7 @@ static char kMYPopAnimationTypeKey;
 @implementation UIView (MYPop)
 #pragma mark - Public Methods
 
-- (void)showWithAnimateType:(MYPopAnimationType)animationType
+- (void)showWithAnimationType:(MYPopAnimationType)animationType
 {
     UIWindow *keywindow = [[UIApplication sharedApplication] keyWindow];
     

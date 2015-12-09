@@ -21,7 +21,7 @@ typedef NS_ENUM(NSUInteger, MYPopAnimationType) {
 
 @interface UIView (MYPop)
 
-- (void)showWithAnimateType:(MYPopAnimationType)animationType;
+- (void)showWithAnimationType:(MYPopAnimationType)animationType;
 
 - (void)dismiss;
 

@@ -27,12 +27,12 @@
 - (IBAction)fadeInAnimate:(id)sender {
     UIView* aView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
     aView.backgroundColor = [UIColor redColor];
-    [aView showWithAnimateType:MYPopAnimationTypeFade];
+    [aView showWithAnimationType:MYPopAnimationTypeFade];
 }
 - (IBAction)CoverInAnimate:(id)sender {
     UIView* aView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 300)];
     aView.backgroundColor = [UIColor yellowColor];
-    [aView showWithAnimateType:MYPopAnimationTypeCover];
+    [aView showWithAnimationType:MYPopAnimationTypeCover];
 }
 
 @end
