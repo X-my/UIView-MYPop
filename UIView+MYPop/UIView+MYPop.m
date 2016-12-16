@@ -92,12 +92,14 @@ static char kMYPopAnimationTypeKey;
 - (AnimationBlock)dismissAnimationWithType:(MYPopAnimationType)type
 {
     AnimationBlock animation;
+    UIControl* overlayView = objc_getAssociatedObject(self, &kMYPopOverlayViewKey);
     switch (type) {
         case MYPopAnimationTypeFade:
         {
             animation = ^{
                 self.transform = CGAffineTransformMakeScale(1.3, 1.3);
                 self.alpha = 0.0;
+                overlayView.alpha = 0;
             };
         }
             break;
@@ -107,6 +109,7 @@ static char kMYPopAnimationTypeKey;
             animation = ^{
                 self.transform = CGAffineTransformIdentity;
                 self.alpha = 0;
+                overlayView.alpha = 0;
             };
         }
             break;
