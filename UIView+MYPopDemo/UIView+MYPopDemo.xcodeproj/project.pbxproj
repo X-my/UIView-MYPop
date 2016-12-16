@@ -29,6 +29,7 @@
 		DC297FF51C17DC20002825D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC297FFF1C17DD9D002825D0 /* UIView+MYPop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MYPop.h"; sourceTree = "<group>"; };
 		DC2980001C17DD9D002825D0 /* UIView+MYPop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MYPop.m"; sourceTree = "<group>"; };
+		ECDBC2B21E03DD3D0052B88A /* UIViewPopupExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPopupExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +87,7 @@
 		DC297FFE1C17DD9D002825D0 /* UIView+MYPop */ = {
 			isa = PBXGroup;
 			children = (
+				ECDBC2B21E03DD3D0052B88A /* UIViewPopupExtension.swift */,
 				DC297FFF1C17DD9D002825D0 /* UIView+MYPop.h */,
 				DC2980001C17DD9D002825D0 /* UIView+MYPop.m */,
 			);
@@ -313,6 +315,7 @@
 				DC297FFA1C17DC20002825D0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
