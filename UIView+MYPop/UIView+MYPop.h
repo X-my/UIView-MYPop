@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, MYPopAnimationType) {
     /**
      *  淡入淡出
@@ -22,6 +23,9 @@ typedef void(^MYPopCompletion)();
 
 @interface UIView (MYPop)
 
+@property (nonatomic, strong) UIColor* overlayViewColor;
+
+- (void)showWithAnimationType:(MYPopAnimationType)animationType inView:(UIView*_Nullable)container;
 - (void)showWithAnimationType:(MYPopAnimationType)animationType;
 
 - (void)dismiss;
@@ -29,3 +33,4 @@ typedef void(^MYPopCompletion)();
 - (void)dismiss:(nullable MYPopCompletion)completion;
 
 @end
+NS_ASSUME_NONNULL_END

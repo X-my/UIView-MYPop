@@ -35,7 +35,9 @@ static char kMYPopOverlayViewColorKey;
 {
     
     UIControl* overlayView = [[UIControl alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
+    if (container == nil) {
+        container = [UIApplication sharedApplication].keyWindow;
+    }
     overlayView.backgroundColor = self.overlayViewColor ? :[UIColor colorWithRed:.16 green:.17 blue:.21 alpha:.5];
     
     [overlayView addTarget:self
