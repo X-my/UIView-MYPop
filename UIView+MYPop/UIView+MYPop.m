@@ -17,28 +17,40 @@ static char kMYPopOverlayViewKey;
 
 static char kMYPopAnimationTypeKey;
 
+static char kMYPopOverlayViewColorKey;
+
+
 @implementation UIView (MYPop)
 #pragma mark - Public Methods
 
-- (void)showWithAnimationType:(MYPopAnimationType)animationType
+- (void)setOverlayViewColor:(UIColor *)overlayViewColor
 {
-    UIWindow *keywindow = [[UIApplication sharedApplication] keyWindow];
+    objc_setAssociatedObject(self, &kMYPopOverlayViewColorKey, overlayViewColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (UIColor *)overlayViewColor
+{
+    return objc_getAssociatedObject(self, &kMYPopOverlayViewColorKey);
+}
+- (void)showWithAnimationType:(MYPopAnimationType)animationType inView:(UIView*)container
+{
     
     UIControl* overlayView = [[UIControl alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    overlayView.backgroundColor = [UIColor colorWithRed:.16 green:.17 blue:.21 alpha:.5];
+    
+    overlayView.backgroundColor = self.overlayViewColor ? :[UIColor colorWithRed:.16 green:.17 blue:.21 alpha:.5];
+    
     [overlayView addTarget:self
                     action:@selector(dismiss)
           forControlEvents:UIControlEventTouchUpInside];
-    [keywindow addSubview:overlayView];
-    [keywindow addSubview:self];
+    [container addSubview:overlayView];
+    [container addSubview:self];
     objc_setAssociatedObject(self, &kMYPopAnimationTypeKey, @(animationType), OBJC_ASSOCIATION_ASSIGN);
     objc_setAssociatedObject(self, &kMYPopOverlayViewKey, overlayView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     switch (animationType) {
         case MYPopAnimationTypeFade:{
-            self.center = CGPointMake(keywindow.bounds.size.width/2.0f,
-                                      keywindow.bounds.size.height/2.0f);
-            [self fadeIn];
+            self.center = CGPointMake(container.bounds.size.width/2.0f,
+                                      container.bounds.size.height/2.0f);
+            [self fadeInWithOverlayView:overlayView];
         }
             break;
         case MYPopAnimationTypeCover:{
@@ -46,13 +58,21 @@ static char kMYPopAnimationTypeKey;
             frame.origin.y = overlayView.frame.size.height;
             frame.origin.x = (overlayView.frame.size.width-frame.size.width)/2;
             self.frame = frame;
-            [self coverIn];
+            [self coverInWithOverlayView:overlayView];
         }
             break;
     }
+}
+- (void)showWithAnimationType:(MYPopAnimationType)animationType
+{
+    [self showWithAnimationType:animationType
+                         inView:[UIApplication sharedApplication].keyWindow];
     
 }
-- (void)dismiss
+- (void)dismiss {
+    [self dismiss:nil];
+}
+- (void)dismiss:(MYPopCompletion)completion
 {
     MYPopAnimationType animationType = [objc_getAssociatedObject(self, &kMYPopAnimationTypeKey)integerValue];
     UIControl* overlayView = objc_getAssociatedObject(self, &kMYPopOverlayViewKey);
@@ -62,29 +82,36 @@ static char kMYPopAnimationTypeKey;
                          if (finished) {
                              [overlayView removeFromSuperview];
                              [self removeFromSuperview];
+                             if (completion) {
+                                 completion();
+                             }
                          }
                      }];
     
     
 }
 #pragma mark - Fade Animation
-- (void)fadeIn
+- (void)fadeInWithOverlayView:(UIView*)overlayView
 {
     self.transform = CGAffineTransformMakeScale(1.3, 1.3);
     self.alpha = 0;
+    overlayView.alpha = 0;
     [UIView animateWithDuration:MYPOP_DEFAULT_DURATION animations:^{
         self.alpha = 1;
         self.transform = CGAffineTransformMakeScale(1, 1);
+        overlayView.alpha = 1;
     }];
     
 }
 #pragma mark - Cover Animation
-- (void)coverIn
+- (void)coverInWithOverlayView:(UIView*)overlayView
 {
     self.alpha = 0;
+    overlayView.alpha = 0;
     [UIView animateWithDuration:MYPOP_DEFAULT_DURATION animations:^{
         self.transform = CGAffineTransformMakeTranslation(0, -self.frame.size.height);
         self.alpha = 1;
+        overlayView.alpha = 1;
     }];
 }
 #pragma mark - Private Methods
@@ -99,7 +126,7 @@ static char kMYPopAnimationTypeKey;
             animation = ^{
                 self.transform = CGAffineTransformMakeScale(1.3, 1.3);
                 self.alpha = 0.0;
-                overlayView.alpha = 0;
+                overlayView.alpha = 0.0;
             };
         }
             break;
@@ -109,7 +136,7 @@ static char kMYPopAnimationTypeKey;
             animation = ^{
                 self.transform = CGAffineTransformIdentity;
                 self.alpha = 0;
-                overlayView.alpha = 0;
+                overlayView.alpha = 0.0;
             };
         }
             break;

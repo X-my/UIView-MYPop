@@ -18,11 +18,14 @@ typedef NS_ENUM(NSUInteger, MYPopAnimationType) {
      */
     MYPopAnimationTypeCover,
 };
+typedef void(^MYPopCompletion)();
 
 @interface UIView (MYPop)
 
 - (void)showWithAnimationType:(MYPopAnimationType)animationType;
 
 - (void)dismiss;
+
+- (void)dismiss:(nullable MYPopCompletion)completion;
 
 @end
