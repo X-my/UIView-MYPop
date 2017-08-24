@@ -18,6 +18,10 @@ typedef NS_ENUM(NSUInteger, MYPopAnimationType) {
      *  从底部弹出
      */
     MYPopAnimationTypeCover,
+    /**
+     *  掉落
+     */
+    MYPopAnimationTypeDrop,
 };
 typedef void(^MYPopCompletion)();
 

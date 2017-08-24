@@ -15,15 +15,7 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-}
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (IBAction)fadeInAnimate:(id)sender {
     UIView* aView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
     aView.backgroundColor = [UIColor redColor];
@@ -33,6 +25,11 @@
     UIView* aView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 300)];
     aView.backgroundColor = [UIColor yellowColor];
     [aView showWithAnimationType:MYPopAnimationTypeCover];
+}
+- (IBAction)dropInAnimate:(id)sender {
+    UIView* aView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, 200)];
+    aView.backgroundColor = [UIColor blueColor];
+    [aView showWithAnimationType:MYPopAnimationTypeDrop];
 }
 
 @end

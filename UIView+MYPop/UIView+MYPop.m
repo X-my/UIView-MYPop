@@ -9,7 +9,7 @@
 #import "UIView+MYPop.h"
 #import <objc/runtime.h>
 
-typedef void(^AnimationBlock)(void);
+typedef void(^MYAnimationBlock)(void);
 
 #define MYPOP_DEFAULT_DURATION  0.35f
 
@@ -38,7 +38,7 @@ static char kMYPopOverlayViewColorKey;
     if (container == nil) {
         container = [UIApplication sharedApplication].keyWindow;
     }
-    overlayView.backgroundColor = self.overlayViewColor ? :[UIColor colorWithRed:.16 green:.17 blue:.21 alpha:.5];
+    overlayView.backgroundColor = self.overlayViewColor ? : [[UIColor blackColor]colorWithAlphaComponent:0.35];
     
     [overlayView addTarget:self
                     action:@selector(dismiss)
@@ -47,23 +47,8 @@ static char kMYPopOverlayViewColorKey;
     [container addSubview:self];
     objc_setAssociatedObject(self, &kMYPopAnimationTypeKey, @(animationType), OBJC_ASSOCIATION_ASSIGN);
     objc_setAssociatedObject(self, &kMYPopOverlayViewKey, overlayView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    
-    switch (animationType) {
-        case MYPopAnimationTypeFade:{
-            self.center = CGPointMake(container.bounds.size.width/2.0f,
-                                      container.bounds.size.height/2.0f);
-            [self fadeInWithOverlayView:overlayView];
-        }
-            break;
-        case MYPopAnimationTypeCover:{
-            CGRect frame = self.frame;
-            frame.origin.y = overlayView.frame.size.height;
-            frame.origin.x = (overlayView.frame.size.width-frame.size.width)/2;
-            self.frame = frame;
-            [self coverInWithOverlayView:overlayView];
-        }
-            break;
-    }
+
+    [self getShowAnimationWithType:animationType container:container]();
 }
 - (void)showWithAnimationType:(MYPopAnimationType)animationType
 {
@@ -92,35 +77,78 @@ static char kMYPopOverlayViewColorKey;
     
     
 }
-#pragma mark - Fade Animation
-- (void)fadeInWithOverlayView:(UIView*)overlayView
+
+
+#pragma mark - Drop Animation
+- (void)dropInWithOverlayView:(UIView*)overlayView
 {
-    self.transform = CGAffineTransformMakeScale(1.3, 1.3);
-    self.alpha = 0;
     overlayView.alpha = 0;
-    [UIView animateWithDuration:MYPOP_DEFAULT_DURATION animations:^{
-        self.alpha = 1;
-        self.transform = CGAffineTransformMakeScale(1, 1);
-        overlayView.alpha = 1;
-    }];
     
 }
-#pragma mark - Cover Animation
-- (void)coverInWithOverlayView:(UIView*)overlayView
-{
-    self.alpha = 0;
-    overlayView.alpha = 0;
-    [UIView animateWithDuration:MYPOP_DEFAULT_DURATION animations:^{
-        self.transform = CGAffineTransformMakeTranslation(0, -self.frame.size.height);
-        self.alpha = 1;
-        overlayView.alpha = 1;
-    }];
-}
 #pragma mark - Private Methods
-
-- (AnimationBlock)dismissAnimationWithType:(MYPopAnimationType)type
+- (MYAnimationBlock)getShowAnimationWithType:(MYPopAnimationType)type container:(UIView*)container
 {
-    AnimationBlock animation;
+    MYAnimationBlock animation;
+    UIControl* overlayView = objc_getAssociatedObject(self, &kMYPopOverlayViewKey);
+    switch (type) {
+        case MYPopAnimationTypeFade:
+        {
+            animation = ^{
+                self.center = CGPointMake(container.bounds.size.width/2.0f,
+                                          container.bounds.size.height/2.0f);
+                self.transform = CGAffineTransformMakeScale(1.3, 1.3);
+                self.alpha = 0;
+                overlayView.alpha = 0;
+                [UIView animateWithDuration:MYPOP_DEFAULT_DURATION animations:^{
+                    self.alpha = 1;
+                    self.transform = CGAffineTransformMakeScale(1, 1);
+                    overlayView.alpha = 1;
+                }];
+            };
+        }
+            break;
+        case MYPopAnimationTypeCover:
+        {
+            animation = ^{
+                CGRect frame = self.frame;
+                frame.origin.y = overlayView.frame.size.height;
+                frame.origin.x = (overlayView.frame.size.width-frame.size.width)/2;
+                self.frame = frame;
+                self.alpha = 0;
+                overlayView.alpha = 0;
+                [UIView animateWithDuration:MYPOP_DEFAULT_DURATION animations:^{
+                    self.transform = CGAffineTransformMakeTranslation(0, -self.frame.size.height);
+                    self.alpha = 1;
+                    overlayView.alpha = 1;
+                }];
+            };
+        }
+            break;
+        
+        case MYPopAnimationTypeDrop:
+        {
+            animation = ^{
+                CGRect frame = self.frame;
+                frame.origin.y = -frame.size.height;
+                frame.origin.x = (overlayView.frame.size.width-frame.size.width)/2;
+                self.frame = frame;
+                overlayView.alpha = 0;
+                [UIView animateWithDuration:MYPOP_DEFAULT_DURATION delay:0 usingSpringWithDamping:0.85 initialSpringVelocity:0.3 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    overlayView.alpha = 1;
+                    CGRect frame = self.frame;
+                    frame.origin.y = (overlayView.frame.size.height - frame.size.height)/2;
+                    self.frame = frame;
+                } completion:nil];
+            };
+        }
+            
+            break;
+    }
+    return animation;
+}
+- (MYAnimationBlock)dismissAnimationWithType:(MYPopAnimationType)type
+{
+    MYAnimationBlock animation;
     UIControl* overlayView = objc_getAssociatedObject(self, &kMYPopOverlayViewKey);
     switch (type) {
         case MYPopAnimationTypeFade:
@@ -137,6 +165,15 @@ static char kMYPopOverlayViewColorKey;
         {
             animation = ^{
                 self.transform = CGAffineTransformIdentity;
+                self.alpha = 0;
+                overlayView.alpha = 0.0;
+            };
+        }
+            break;
+        case MYPopAnimationTypeDrop:
+        {
+            animation = ^{
+                self.transform = CGAffineTransformMakeTranslation(0, self.frame.origin.y);
                 self.alpha = 0;
                 overlayView.alpha = 0.0;
             };
